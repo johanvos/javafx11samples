@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'application'
+repositories {
+    maven {
+        url 'http://nexus.gluonhq.com/nexus/content/repositories/public-snapshots'
+    }
+}
+mainClassName='org.projavafx.javafx3d.hello3d.Shapes'
+compileJava {
+    doFirst {
+        println classpath.asPath
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+        ]
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+run {
+    doFirst {
+        jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls'
+        ]
+        classpath = sourceSets.main.output
+    }
+}
+dependencies {
+    compile 'org.openjfx:javafx.controls:11.0.0-SNAPSHOT:linux'
+}
+
