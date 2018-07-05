@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 repositories {
     maven {
-        url 'http://nexus.gluonhq.com/nexus/content/repositories/releases'
+        url 'http://oss.sonatype.org/content/repositories/snapshots/'
     }
 }
 mainClassName='org.projavafx.javafx3d.hello3d.Shapes'
@@ -25,7 +25,7 @@ run {
     }
 }
 dependencies {
-    // compile 'org.openjfx:javafx.controls:11.0.0-ea1:linux'
-    compile 'org.openjfx:javafx.controls:11.0.0-ea1:mac'
+    compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:${javafx.platform}"
+    // compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:linux"
 }
 
