@@ -1,4 +1,5 @@
 package org.modernclient.javafx3d.hello3dadvanced;
+
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -23,9 +24,9 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
-
 public class Main extends Application {
-     private Model model;
+
+    private Model model;
     private View view;
 
     public Main() {
@@ -58,13 +59,13 @@ public class Main extends Application {
     }
 
     private static class Model {
+
         private DoubleProperty rotate = new SimpleDoubleProperty(
                 this, "rotate", 60.0d);
         private ObjectProperty<DrawMode> drawMode = new SimpleObjectProperty<>(
                 this, "drawMode", DrawMode.FILL);
         private ObjectProperty<CullFace> cullFace = new SimpleObjectProperty<>(
                 this, "cullFace", CullFace.BACK);
-
 
         public final double getRotate() {
             return rotate.doubleValue();
@@ -104,11 +105,13 @@ public class Main extends Application {
     }
 
     private static class View {
+
         public Scene scene;
 
         public Sphere sphere;
         public Cylinder cylinder;
         public Box box;
+        public MeshView meshView;
 
         public ComboBox<DrawMode> drawModeComboBox;
         public ComboBox<CullFace> cullFaceComboBox;
@@ -118,20 +121,24 @@ public class Main extends Application {
             sphere = new Sphere(50);
             cylinder = new Cylinder(50, 100);
             box = new Box(100, 100, 100);
+            meshView = createMeshView(100);
 
-            sphere.setTranslateX(-200);
-            cylinder.setTranslateX(0);
-            box.setTranslateX(200);
+            sphere.setTranslateX(-300);
+            cylinder.setTranslateX(-100);
+            box.setTranslateX(100);
+            meshView.setTranslateX(300);
 
             sphere.setMaterial(new PhongMaterial(Color.RED));
-            cylinder.setMaterial(new PhongMaterial(Color.BLUE));
-            box.setMaterial(new PhongMaterial(Color.GREEN));
+            cylinder.setMaterial(new PhongMaterial(Color.YELLOW));
+            box.setMaterial(new PhongMaterial(Color.BLUE));
+            meshView.setMaterial(new PhongMaterial(Color.GREEN));
 
             setupShape3D(sphere, model);
             setupShape3D(cylinder, model);
             setupShape3D(box, model);
+            setupShape3D(meshView, model);
 
-            Group shapesGroup = new Group(sphere, cylinder, box);
+            Group shapesGroup = new Group(sphere, cylinder, box, meshView);
 
             drawModeComboBox = new ComboBox<>();
             drawModeComboBox.setItems(FXCollections.observableArrayList(
@@ -166,7 +173,7 @@ public class Main extends Application {
             controlPanel.setPadding(new Insets(10, 10, 10, 10));
 
             BorderPane root = new BorderPane(shapesGroup, null, null, controlPanel, null);
-            scene = new Scene(root, 640, 480);
+            scene = new Scene(root, 800, 600);
         }
 
         private void setupShape3D(Shape3D shape3D, Model model) {
@@ -176,6 +183,27 @@ public class Main extends Application {
             shape3D.drawModeProperty().bind(model.drawModeProperty());
             shape3D.cullFaceProperty().bind(model.cullFaceProperty());
             shape3D.rotateProperty().bind(model.rotateProperty());
+        }
+
+        private MeshView createMeshView(float length) {
+            TriangleMesh mesh = new TriangleMesh();
+            mesh.getPoints().addAll(
+                    0f, 0f, 0f,
+                    length, 0f, 0f,
+                    0f, length, 0f,
+                    0f, 0f, length);
+            mesh.getTexCoords().addAll(
+                    0f, 0f,
+                    0f, 1f,
+                    1f, 0f,
+                    1f, 1f);
+            mesh.getFaces().addAll(
+                    0, 0, 2, 1, 1, 2,
+                    0, 0, 3, 1, 2, 2,
+                    0, 0, 1, 1, 3, 2,
+                    1, 0, 2, 1, 3, 2);
+            MeshView meshView = new MeshView(mesh);
+            return meshView;
         }
     }
 }
