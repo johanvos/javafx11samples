@@ -1,3 +1,45 @@
 apply plugin: 'java'
 apply plugin: 'application'
+repositories {
+    maven {
+        mavenCentral()
+        url 'http://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
 mainClassName = 'org.modernclients.javafx3d.mesh.MeshDemo'
+compileJava {
+    doFirst {
+//        println classpath.asPath
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.graphics'
+        ]
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+run {
+    doFirst {
+        jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.graphics'
+        ]
+        classpath = sourceSets.main.output
+    }
+}
+dependencies {
+    def currentOS = org.gradle.internal.os.OperatingSystem.current();
+    def classifier
+    if (currentOS.isWindows()) {
+        classifier = 'win'
+    } else if (currentOS.isLinux()) {
+        classifier = 'linux'
+    } else if (currentOS.isMacOsX()) {
+        classifier = 'mac'
+    }
+    //compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:${javafx.platform}"
+    compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:$classifier"
+    compile "org.openjfx:javafx.graphics:11.0.0-SNAPSHOT:$classifier"
+    compile "org.openjfx:javafx.base:11.0.0-SNAPSHOT:$classifier"
+}
