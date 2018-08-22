@@ -1,12 +1,21 @@
 apply plugin: 'java'
 apply plugin: 'application'
 repositories {
-    maven {
-        mavenCentral()
-        url 'http://oss.sonatype.org/content/repositories/snapshots/'
-    }
+    mavenCentral()
 }
 mainClassName = 'org.modernclients.javafx3d.mesh.MeshDemo'
+
+def currentOS = org.gradle.internal.os.OperatingSystem.current();
+def classifier
+if (currentOS.isWindows()) {
+    classifier = 'win'
+} else if (currentOS.isLinux()) {
+    classifier = 'linux'
+} else if (currentOS.isMacOsX()) {
+    classifier = 'mac'
+}
+
+
 compileJava {
     doFirst {
 //        println classpath.asPath
@@ -21,7 +30,7 @@ compileJava {
 run {
     doFirst {
         jvmArgs = [
-            '--module-path', classpath.asPath,
+            '--module-path', classpath.filter{!it.name.startsWith("javafx-") || it.name.contains("-$classifier")}.asPath,
             '--add-modules', 'javafx.controls',
             '--add-modules', 'javafx.graphics'
         ]
@@ -29,17 +38,7 @@ run {
     }
 }
 dependencies {
-    def currentOS = org.gradle.internal.os.OperatingSystem.current();
-    def classifier
-    if (currentOS.isWindows()) {
-        classifier = 'win'
-    } else if (currentOS.isLinux()) {
-        classifier = 'linux'
-    } else if (currentOS.isMacOsX()) {
-        classifier = 'mac'
-    }
-    //compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:${javafx.platform}"
-    compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:$classifier"
-    compile "org.openjfx:javafx.graphics:11.0.0-SNAPSHOT:$classifier"
-    compile "org.openjfx:javafx.base:11.0.0-SNAPSHOT:$classifier"
+    compile "org.openjfx:javafx-controls:11-ea+19:$classifier"
+    compile "org.openjfx:javafx-graphics:11-ea+19:$classifier"
+    compile "org.openjfx:javafx-base:11-ea+19:$classifier"
 }
