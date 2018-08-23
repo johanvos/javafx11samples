@@ -1,16 +1,28 @@
 apply plugin: 'java'
 apply plugin: 'application'
 repositories {
-    maven {
-        url 'http://oss.sonatype.org/content/repositories/snapshots/'
-    }
+    mavenCentral()
 }
 mainClassName='org.projavafx.javafx3d.hello3d.Shapes'
+
+def currentOS = org.gradle.internal.os.OperatingSystem.current();
+def classifier
+if (currentOS.isWindows()) {
+    classifier = 'win'
+} else if (currentOS.isLinux()) {
+    classifier = 'linux'
+} else if (currentOS.isMacOsX()) {
+    classifier = 'mac'
+}
+
+
 compileJava {
     doFirst {
-        println classpath.asPath
+//        println classpath.asPath
         options.compilerArgs = [
             '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.graphics'
         ]
         classpath = sourceSets.main.compileClasspath
     }
@@ -18,14 +30,16 @@ compileJava {
 run {
     doFirst {
         jvmArgs = [
-            '--module-path', classpath.asPath,
-            '--add-modules', 'javafx.controls'
+            '--module-path', classpath.filter{!it.name.startsWith("javafx-") || it.name.contains("-$classifier")}.asPath,
+            '--add-modules', 'javafx.controls',
+            '--add-modules', 'javafx.graphics'
         ]
-        classpath = sourceSets.main.output
+        classpath = sourceSets.main.output 
     }
 }
 dependencies {
-    compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:${javafx.platform}"
-    // compile "org.openjfx:javafx.controls:11.0.0-SNAPSHOT:linux"
+    compile "org.openjfx:javafx-controls:11-ea+19:$classifier"
+    compile "org.openjfx:javafx-graphics:11-ea+19:$classifier"
+    compile "org.openjfx:javafx-base:11-ea+19:$classifier"
 }
 
