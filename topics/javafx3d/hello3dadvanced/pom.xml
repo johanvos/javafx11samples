@@ -10,16 +10,9 @@
   <parent>
     <groupId>org.openjfx</groupId>
     <artifactId>javafx</artifactId>
-    <version>11.0.0-SNAPSHOT</version>
+    <version>11-ea+25</version>
   </parent>
 
-  <repositories>
-    <repository>
-      <id>mavenlocal</id>
-      <name>mavenlocal repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
 
   <dependencies>
     <dependency>
@@ -30,8 +23,8 @@
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
-      <artifactId>javafx.controls</artifactId>
-      <version>11.0.0-SNAPSHOT</version>
+      <artifactId>javafx-controls</artifactId>
+      <version>11-ea+25</version>
       <classifier>${javafx.platform}</classifier>
     </dependency>
   </dependencies>
