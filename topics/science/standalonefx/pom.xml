@@ -30,12 +30,22 @@
         <executions>
           <execution>
             <goals>
-              <goal>java</goal>
+              <goal>exec</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <mainClass>org.modernclient.StandAlone</mainClass>
+            <executable>java</executable>
+            <longModulepath>false</longModulepath>
+            <arguments>
+                <argument>--module-path</argument>
+                <classpath />
+                <argument>--add-modules</argument>
+                <argument>javafx.controls</argument>
+                <argument>-classpath</argument>
+                <classpath />
+                <argument>org.modernclient.StandAlone</argument>
+            </arguments>
         </configuration>
       </plugin>
     </plugins>
