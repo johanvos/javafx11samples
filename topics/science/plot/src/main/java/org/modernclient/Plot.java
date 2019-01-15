@@ -37,5 +37,11 @@ public class Plot {
         });
     }
 
+    public static void main(String[] args) {
+        double[] x = new double[]{0.,1.,2.};
+        double[] y = new double[]{0.,10.,16.};
+        scatter(x, y, "plot");
+    }
+
 }
 

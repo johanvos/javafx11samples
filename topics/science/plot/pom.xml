@@ -35,7 +35,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>org.modernclient.HelloNd4j</mainClass>
+          <mainClass>org.modernclient.Plot</mainClass>
         </configuration>
       </plugin>
     </plugins>
