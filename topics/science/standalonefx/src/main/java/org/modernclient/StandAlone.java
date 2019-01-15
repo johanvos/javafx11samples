@@ -1,11 +1,11 @@
 package org.modernclient;
 
-import javafx.application.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class StandAlone {
